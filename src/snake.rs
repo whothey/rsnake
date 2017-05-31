@@ -10,11 +10,23 @@ pub struct Snake {
     tail: Vec<sdl2::rect::Rect>
 }
 
+#[derive(PartialEq)]
 pub enum Facing {
     Top,
     Bottom,
     Left,
     Right
+}
+
+impl Facing {
+    pub fn opposite(&self) -> Self {
+        match *self {
+            Facing::Top    => Facing::Bottom,
+            Facing::Bottom => Facing::Top,
+            Facing::Left   => Facing::Right,
+            Facing::Right  => Facing::Left
+        }
+    }
 }
 
 impl Snake {
@@ -46,10 +58,11 @@ impl Snake {
 
     // TODO: Name method 'better'
     pub fn look_to(&mut self, direction: Facing) {
-        self.direction = direction;
+        if self.direction != direction.opposite() {
+            self.direction = direction;
+        }
     }
 
-    // TODO: Snake couldn't go reverse! E.g. left to right or bottom-up
     pub fn move_forward(&mut self) {
         let (x, y) = (self.head.x(), self.head.y());
 
@@ -75,6 +88,9 @@ impl Snake {
         }
     }
 
+    // Take the last element of Tail, since it will be discarded and clone head(x, y) to
+    // last_element(x, y) and put it on the first place of Vec.
+    // All other elements will be already shifted after the insertion.
     fn move_tail(&mut self) {
         match self.tail.pop() {
             Some(mut rec) => {
