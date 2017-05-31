@@ -53,6 +53,8 @@ impl Snake {
     pub fn move_forward(&mut self) {
         let (x, y) = (self.head.x(), self.head.y());
 
+        self.move_tail();
+
         match self.direction {
             Facing::Top => {
                 self.head.set_x(x);
@@ -73,9 +75,15 @@ impl Snake {
         }
     }
 
-    // Move the tail according to "parent" tile
     fn move_tail(&mut self) {
-        unimplemented!()
+        match self.tail.pop() {
+            Some(mut rec) => {
+                rec.set_x(self.head.x());
+                rec.set_y(self.head.y());
+                self.tail.insert(0, rec);
+            },
+            None => ()
+        }
     }
 }
 
