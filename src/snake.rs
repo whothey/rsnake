@@ -56,6 +56,18 @@ impl Snake {
         }
     }
 
+    pub fn head(&self) -> &sdl2::rect::Rect {
+        &self.head
+    }
+
+    pub fn head_x(&self) -> i32 {
+        self.head.x()
+    }
+
+    pub fn head_y(&self) -> i32 {
+        self.head.x()
+    }
+
     // TODO: Name method 'better'
     pub fn look_to(&mut self, direction: Facing) {
         if self.direction != direction.opposite() {
