@@ -95,10 +95,11 @@ fn main() {
         snake.move_forward();
 
         // Nhack!
-        // TODO: Tail must grow!
         if apple.has_intersection(*snake.head()) {
             let newx = rand_range_w.ind_sample(&mut rng) as i32 * TILE as i32;
             let newy = rand_range_h.ind_sample(&mut rng) as i32 * TILE as i32;
+
+            snake.tail_grow();
 
             apple.set_x(newx);
             apple.set_y(newy);

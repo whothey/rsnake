@@ -5,7 +5,7 @@ pub struct Snake {
     velocity: u8, // Tiles per move_forward()
     color: sdl2::pixels::Color,
     direction: Facing,
-    tail_len: u8,
+    tail_len: usize,
     head: sdl2::rect::Rect,
     tail: Vec<sdl2::rect::Rect>
 }
@@ -100,10 +100,25 @@ impl Snake {
         }
     }
 
+    pub fn tail_grow(&mut self) {
+        self.tail_grow_by(1)
+    }
+
+    pub fn tail_grow_by(&mut self, len: usize) {
+        self.tail_len += len;
+    }
+
     // Take the last element of Tail, since it will be discarded and clone head(x, y) to
     // last_element(x, y) and put it on the first place of Vec.
     // All other elements will be already shifted after the insertion.
     fn move_tail(&mut self) {
+        // If there is less items on tail than the current tail length, then duplicate the last one
+        // to be moved instead
+        if self.tail_len != self.tail.len() {
+            let dup = self.tail.iter().last().unwrap().clone();
+            self.tail.push(dup);
+        }
+
         match self.tail.pop() {
             Some(mut rec) => {
                 rec.set_x(self.head.x());
