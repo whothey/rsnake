@@ -6,7 +6,7 @@ mod snake;
 use sdl2::pixels::Color;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
-use sdl2::rect::{ Rect, Point };
+use sdl2::rect::{ Rect };
 use std::thread;
 use std::time::Duration;
 use snake::*;
@@ -85,7 +85,7 @@ fn main() {
         canvas.clear();
 
         canvas.set_draw_color(RED);
-        canvas.fill_rect(apple);
+        canvas.fill_rect(apple).expect("Could not draw the apple!");
 
         snake.draw(&mut canvas);
 
